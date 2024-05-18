@@ -1,0 +1,13 @@
+# Diretório onde estão os arquivos
+$diretorio = "E:\Library Anime\One Piece\Arco Wano"
+
+# Lista todos os arquivos no diretório
+Get-ChildItem -Path $diretorio | ForEach-Object {
+    # Verifica se o nome do arquivo contém colchetes
+    if ($_.Name -match "\[.*\]") {
+        # Remove a palavra entre colchetes e os próprios colchetes
+        $novoNome = $_.Name -replace "\[.*?\]", ""
+        # Renomeia o arquivo
+        Rename-Item -LiteralPath $_.FullName -NewName $novoNome -Force
+    }
+}
