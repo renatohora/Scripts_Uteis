@@ -1,13 +1,26 @@
-# Diretório onde estão os arquivos
-$diretorio = "E:\Library Anime\One Piece\Arco Wano"
+# Defina o caminho da pasta onde os arquivos estão localizados
+$folderPath = "E:\teste\"
 
-# Lista todos os arquivos no diretório
-Get-ChildItem -Path $diretorio | ForEach-Object {
-    # Verifica se o nome do arquivo contém colchetes
-    if ($_.Name -match "\[.*\]") {
-        # Remove a palavra entre colchetes e os próprios colchetes
-        $novoNome = $_.Name -replace "\[.*?\]", ""
-        # Renomeia o arquivo
-        Rename-Item -LiteralPath $_.FullName -NewName $novoNome -Force
+# Palavra que você deseja substituir nos nomes dos arquivos
+$oldWord = "nome atual do arquivo"
+
+# Nova palavra que você deseja colocar nos nomes dos arquivos
+$newWord = "novo nome do arquivo"
+
+# Obtenha a lista de arquivos na pasta
+$files = Get-ChildItem -Path $folderPath
+
+# Percorra cada arquivo na pasta
+foreach ($file in $files) {
+    # Verifique se o nome do arquivo contém a palavra antiga
+    if ($file.Name -match $oldWord) {
+        # Substitua a palavra antiga pela nova palavra no nome do arquivo
+        $newFileName = $file.Name -replace $oldWord, $newWord
+
+        # Construa o novo caminho com o novo nome do arquivo
+        $newPath = Join-Path -Path $folderPath -ChildPath $newFileName
+
+        # Renomeie o arquivo
+        Rename-Item -Path $file.FullName -NewName $newFileName
     }
 }
